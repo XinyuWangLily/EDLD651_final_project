@@ -5,20 +5,27 @@ format: pdf
 editor: visual
 ---
 
+<<<<<<< Updated upstream
 # Load Packages
 
+=======
+>>>>>>> Stashed changes
 ```{r}
+
 library(here)
 library(janitor)
 library(rio)
 library(tidyverse)
 library(tm)
+
 ```
 
 # Import Data
 
+<<<<<<< Updated upstream
 ```{r}
 # Fruit data
+
 fruit_files <- list.files(pattern = ".xlsx", path = "../data/fruit-2020", full.names = TRUE)
 
 fruit_2020 <- do.call(rbind, lapply
@@ -154,10 +161,16 @@ veg_2020_clean |>
 
 ```{r}
 
+
+
 ```
 
 # What is the relationship between retail price and yield by form? (Cheyna)
 
 ```{r}
 
+=======
+veggie_data <- import(here("data", "Vegetable-Prices-2022.csv")) %>%  
+  clean_names()
+>>>>>>> Stashed changes
 ```
