@@ -19,6 +19,8 @@ library(tidyverse)
 library(tm)
 library(dplyr)
 #install.packages("tm") <- i didn't have this package
+
+# Peer Review: Nice job loading all your packages up front! One little note that you don't need both `tidyverse` *and* `dplyr` since tidyverse already loads dplyr.
 ```
 
 # Import Data
@@ -37,6 +39,9 @@ veg_files <- list.files(pattern = ".xlsx", path = "../data/vegetables-2020", ful
 
 veg_2020 <- do.call(rbind, lapply
         (veg_files, import, as.is=T, header = FALSE))
+
+# Peer review: Great use of list.files() + lapply() to batch-read the Excel files! Those are new to me and I am happy to learn those new functions! If you want to be extra reproducible, you may also consider using here("data", "fruit-2020"). 
+
 ```
 
 # Removing rows without data
@@ -44,7 +49,13 @@ veg_2020 <- do.call(rbind, lapply
 ```{r}
 # Fruit cleaning
 fruit_2020 <- fruit_2020 %>% # rename cols to be more descriptive
-  rename(fruit = ...1, retail_price = ...2, retail_price_unit = ...3, yield = ...4, cup_eq_size = ...5, cup_eq_unit = ...6,cup_eq_price = ...7)
+  rename(fruit = ...1, 
+         retail_price = ...2, 
+         retail_price_unit = ...3, 
+         yield = ...4, 
+         cup_eq_size = ...5, 
+         cup_eq_unit = ...6,
+         cup_eq_price = ...7)
 
 fruit_2020_clean <- fruit_2020 %>% # remove rows without data (these were just the citation of where the data came from)
   filter(!substr(fruit, 1, 1) == "1") %>% 
@@ -55,7 +66,13 @@ fruit_2020_clean <- fruit_2020 %>% # remove rows without data (these were just t
 
 # Veggie cleaning
 veg_2020 <- veg_2020 %>% # rename cols to be more descriptive
-  rename(veg = ...1, retail_price = ...2, retail_price_unit = ...3, yield = ...4, cup_eq_size = ...5, cup_eq_unit = ...6,cup_eq_price = ...7)
+  rename(veg = ...1, 
+         retail_price = ...2, 
+         retail_price_unit = ...3, 
+         yield = ...4, 
+         cup_eq_size = ...5, 
+         cup_eq_unit = ...6,
+         cup_eq_price = ...7)
 
 veg_2020_clean <- veg_2020 %>% # remove rows without data (these were just the citation of where the data came from)
   filter(!substr(veg, 1, 1) == "1") %>% 
@@ -63,6 +80,8 @@ veg_2020_clean <- veg_2020 %>% # remove rows without data (these were just the c
   filter(!substr(veg, 1, 1) == "3") %>% 
   filter(!substr(veg, 1, 1) == "4") %>% 
   filter(!substr(veg, 1, 6) == "Source")
+
+# Peer review: Great job! I just reformat the code a bit to increase readability. 
 ```
 
 # Tidying the data
@@ -111,6 +130,9 @@ veg_2020_clean <- veg_2020_clean |>
   select(-is_veg) |> 
   # remove any rows with NA in the reatil_price column
   filter(!is.na(retail_price))
+
+# Peer review: This logic is very clear and clever. I learned this fill-then-filter pattern from your script!
+# Peer review: Given that your fruit and veg pipelines are very similar, another option is to wrap the logic into a helper function and then apply to both datasets to reduce repetition. But your current code is already very clear and readable! Well-done!
 ```
 
 # How does the price of fruits and vegetables vary based on form? (Kyla)
@@ -156,6 +178,8 @@ fruit_2020_clean |>
 veg_2020_clean |> 
   group_by(form) |> 
   summarize(mean_retail_price = mean(retail_price, na.rm = TRUE))
+
+# Peer reivew: Great job! The case_when is very readable! It might be nice to turn these summaries into a small gt/kable table or plot. 
 ```
 
 # Do fruit and vegetable prices vary by family (berries, stone fruit etc)? (Erika)
@@ -327,4 +351,6 @@ normal_fruit_veg_plot <- fruit_veg_df %>%
   theme(legend.position = "none")
 
 normal_fruit_veg_plot
+
+# Peer review: your modeling code is very clear and nicely annotated! This is such an interesting project!
 ```
